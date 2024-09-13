@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>山鬼川君</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .toggle-link {
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .error-message {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container" id="login-container">
+        <h2>登陆</h2>
+        <form id="loginForm">
+            <input type="text" id="login-username" placeholder="账号" required>
+            <input type="password" id="login-password" placeholder="密码" required>
+            <button type="submit">登陆</button>
+        </form>
+        <p class="error-message" id="login-error">Invalid credentials. Please try again.</p>
+        <p>没有账号？ <span class="toggle-link" id="show-register">注册一个</span></p>
+    </div>
+
+    <div class="form-container" id="register-container" style="display: none;">
+        <h2>注册</h2>
+        <form id="registerForm">
+            <input type="text" id="register-username" placeholder="账号" required>
+            <input type="password" id="register-password" placeholder="密码" required>
+            <button type="submit">注册</button>
+        </form>
+        <p class="error-message" id="register-error">Username already exists. Please choose another one.</p>
+        <p>已有账号? <span class="toggle-link" id="show-login">登陆</span></p>
+    </div>
+
+    <script>
+        // 切换到注册页面
+        document.getElementById("show-register").addEventListener("click", function() {
+            document.getElementById("login-container").style.display = "none";
+            document.getElementById("register-container").style.display = "block";
+        });
+
+        // 切换到登录页面
+        document.getElementById("show-login").addEventListener("click", function() {
+            document.getElementById("login-container").style.display = "block";
+            document.getElementById("register-container").style.display = "none";
+        });
+
+        // 模拟存储用户数据
+        const users = JSON.parse(localStorage.getItem("users")) || {};
+
+        // 处理注册逻辑
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const username = document.getElementById("register-username").value;
+            const password = document.getElementById("register-password").value;
+
+            if (users[username]) {
+                // 如果用户名已存在
+                document.getElementById("register-error").style.display = "block";
+            } else {
+                // 存储用户名和密码
+                users[username] = password;
+                localStorage.setItem("users", JSON.stringify(users));
+
+                alert("Registration successful! Please log in.");
+                document.getElementById("register-error").style.display = "none";
+                document.getElementById("login-container").style.display = "block";
+                document.getElementById("register-container").style.display = "none";
+            }
+        });
+
+        // 处理登录逻辑
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const username = document.getElementById("login-username").value;
+            const password = document.getElementById("login-password").value;
+
+            if (users[username] && users[username] === password) {
+                // 登录成功，跳转到成功页面
+                alert("登陆成功l!");
+                window.location.href ="index2.html";
+            } else {
+                // 登录失败，显示错误信息
+                document.getElementById("发生了一个错误").style.display = "block";
+            }
+        });
+    </script>
+
+</body>
+</html>
